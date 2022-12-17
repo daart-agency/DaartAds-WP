@@ -7,7 +7,7 @@ Description: با استفاده از این افزونه میتوانید تب�
 Version: 1.0.0
 Author: Daart Agency - تیم فنی آژانس تبلیغات دارت
 Author URI: https://daart.agency
-License: MIT
+License: GPLv2 or Later
 */
 
 if(! defined('ABSPATH'))
