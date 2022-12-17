@@ -1,4 +1,4 @@
-# DaartAds JavaScript library
+# DaartAds WordPress Plugin
 This plugin enables you to use the DaartAds APIs on your WordPress website..
 
 
