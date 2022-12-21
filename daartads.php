@@ -4,7 +4,7 @@
 Plugin Name: افزونه نمایش تبلیغات دارت ادز
 Plugin URI: https://daartads.com
 Description: با استفاده از این افزونه میتوانید تبلیغات دارت ادز را در وب سایت خود نمایش دهید
-Version: 1.0.0
+Version: 1.0.1
 Author: Daart Agency - تیم فنی آژانس تبلیغات دارت
 Author URI: https://daart.agency
 License: GPLv2 or Later
@@ -65,7 +65,8 @@ if(!class_exists('DaartAds'))
 
         public function get_header()
         {
-            echo '<!-- Daart Ads CSS --><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/daart-agency/DaartAds-JS@main/css/DaartAds.min.css">';
+            $p_dir = plugin_dir_url(__FILE__) . 'include/DaartAds.min.css';
+            echo "<!-- Daart Ads CSS --><link rel='stylesheet' href='$p_dir'>";
         }
 
         public function init_footer()
@@ -76,7 +77,8 @@ if(!class_exists('DaartAds'))
         public function get_footer()
         {
             $token = get_option("daart_ads_token");
-            echo "<!-- Daart Ads JS --><script>var $ = jQuery;</script><script src='https://cdn.jsdelivr.net/gh/daart-agency/DaartAds-JS@main/js/DaartAds.min.js' daart-token='$token'></script>";
+            $p_dir = plugin_dir_url(__FILE__) . 'include/DaartAds.min.js';
+            echo "<!-- Daart Ads JS --><script>var $ = jQuery;</script><script src='$p_dir' daart-token='$token'></script>";
         }
 
         public function ViewDaartConfig()
@@ -90,7 +92,7 @@ if(!class_exists('DaartAds'))
         function wp_save_token_daart() {
             $tokenError = null;
             if (trim(esc_html($_POST['submit'])) !== '') {
-                $token = esc_html($_POST['daart-key']);
+                $token = sanitize_text_field(esc_html($_POST['daart-key']));
                 if ($token !== '') {
                     if (get_option('daart_ads_token') !== false) {
                         update_option('daart_ads_token', $token);
@@ -106,7 +108,7 @@ if(!class_exists('DaartAds'))
             {
                 delete_option("daart_ads_token");
             }
-            wp_redirect($_SERVER['HTTP_REFERER']);
+            wp_safe_redirect(esc_url($_SERVER['HTTP_REFERER']));
             exit();
         }
 
