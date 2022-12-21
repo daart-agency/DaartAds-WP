@@ -1,3 +1,8 @@
+<?php
+if(! defined('ABSPATH'))
+    die("Access denied");
+?>
+
 <style>
     #daart_key {
         width: 50%;
@@ -70,7 +75,7 @@
     <form action="<?php echo esc_url( admin_url('admin-post.php') ); ?>" method="post">
         <input name='action' type="hidden" value='daart_form_submit'>
         <label for="daart_key">کلید کاربری:</label>
-        <input type="password" readonly value="<?php echo str_repeat("*",strlen(get_option('daart_ads_token'))) ?>" id="daart_key">
+        <input type="password" readonly value="<?php echo str_repeat("*",get_option('daart_ads_token')) ?>" id="daart_key">
         <br><br>
         <input type="submit" name="renew_key" onclick="return confirm('آیا مطمئن هستید؟ با این کار تمامی تبلیغات فعال شما غیر فعال می شود')" value="تغییر کلید"  class="btn btn-warning">
     </form>
@@ -84,14 +89,14 @@
     <form action="<?php echo esc_url( admin_url('admin-post.php') ); ?>" method="post">
         <input name='action' type="hidden" value='daart_form_submit'>
         <label for="daart_key">کلید کاربری:</label>
-        <input type="text" name="daart-key" value="<?php echo get_option('daart_ads_token') ?>" id="daart_key" required="required" placeholder="کلید کاربری از طرف دارت برای شما ارسال می شود." oninvalid="this.setCustomValidity('وارد کردن این فیلد اجباری است')">
+        <input type="text" name="daart-key" value="<?php echo esc_html(get_option('daart_ads_token')) ?>" id="daart_key" required="required" placeholder="کلید کاربری از طرف دارت برای شما ارسال می شود." oninvalid="this.setCustomValidity('وارد کردن این فیلد اجباری است')">
         <br><br>
         <input type="submit" name="submit" value="ثبت کلید" class="btn  btn-submit">
     </form>
 
     <?php if($error = get_transient('daart_error_token')): ?>
         <div class="error">
-            <p><?php echo $error ?></p>
+            <p><?php echo esc_html($error) ?></p>
         </div>
     <?php endif; ?>
 <?php } ?>
