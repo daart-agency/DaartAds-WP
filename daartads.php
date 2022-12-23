@@ -28,8 +28,7 @@ if(!class_exists('DaartAds'))
             add_shortcode('daart-ads', array(&$this, 'ShortCodeCB'));
             if(get_option("daart_ads_token") !== false)
             {
-                $this->init_header();
-                $this->init_footer();
+                add_action('wp_enqueue_scripts',array(&$this, 'add_scripts'));
             }
         }
 
@@ -50,7 +49,8 @@ if(!class_exists('DaartAds'))
         {
             if(!empty($atts['adsize']))
             {
-                echo "<daart-ads daart-adsize='{$atts['adsize']}'></daart-ads>";
+                $size = esc_html($atts['adsize']);
+                echo "<daart-ads daart-adsize='$size'></daart-ads>";
             }
         }
 
@@ -58,27 +58,13 @@ if(!class_exists('DaartAds'))
             return $args;
         }
 
-        public function init_header()
+        public function add_scripts()
         {
-            add_action("wp_head",array(&$this, 'get_header'),10000);
-        }
-
-        public function get_header()
-        {
-            $p_dir = plugin_dir_url(__FILE__) . 'include/DaartAds.min.css';
-            echo "<!-- Daart Ads CSS --><link rel='stylesheet' href='$p_dir'>";
-        }
-
-        public function init_footer()
-        {
-            add_action("wp_footer",array(&$this, 'get_footer'),10000);
-        }
-
-        public function get_footer()
-        {
-            $token = get_option("daart_ads_token");
-            $p_dir = plugin_dir_url(__FILE__) . 'include/DaartAds.min.js';
-            echo "<!-- Daart Ads JS --><script>var $ = jQuery;</script><script src='$p_dir' daart-token='$token'></script>";
+            // Styles
+            wp_enqueue_style('daart-ads',plugin_dir_url(__FILE__) . 'include/DaartAds.min.css');
+            wp_enqueue_script('daart-ads',plugin_dir_url(__FILE__) . 'include/DaartAds.min.js',array('jquery'));
+            $token = esc_html(get_option("daart_ads_token"));
+            wp_add_inline_script('daart-ads',"var $ = jQuery;$('#daart-ads-js').attr('daart-token','$token')");
         }
 
         public function ViewDaartConfig()
