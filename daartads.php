@@ -45,13 +45,9 @@ if(!class_exists('DaartAds'))
             );
         }
 
-        public function ShortCodeCB($atts)
+        public function ShortCodeCB()
         {
-            if(!empty($atts['adsize']))
-            {
-                $size = esc_html($atts['adsize']);
-                echo "<daart-ads daart-adsize='$size'></daart-ads>";
-            }
+            echo "<daart-ads></daart-ads>";
         }
 
         public function daart_options_validate($args) {
